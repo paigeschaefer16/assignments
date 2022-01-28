@@ -1,7 +1,14 @@
+/*
+ * Author: Paige Schaefer 
+ * Purpose: To create a snack bar menu using structs 
+ * Language:  C
+ * Created: January 2022
+ */
+
 #include <stdio.h>
 #include <string.h>
 
-struct Snacks{
+struct Snacks{				/* struct to create Snack Bar*/
 	char snackType[50];
 	float cost;
 	int quantity; 
@@ -11,11 +18,11 @@ int main() {
 	printf("Welcome to Steven Struct's Snack Bar.\n"); 
 	printf("How much money do you have? ");
 	
-	float userMoney;
+	float userMoney;						/* reading user Money */
 	scanf("%f",&userMoney);
 	printf("\n");
 	
-	struct Snacks Snack0;
+	struct Snacks Snack0;					/* creating structs*/
 	struct Snacks Snack1;
 	struct Snacks Snack2;
 
@@ -31,17 +38,18 @@ int main() {
         Snack2.cost = 0.50;
         Snack2.quantity = 0;
 
+	/* printing structs*/
 	printf("0) %s \t\t cost: $%.2f \t quantity: %d \n",Snack0.snackType,Snack0.cost,Snack0.quantity);
 	printf("1) %s \t cost: $%.2f \t quantity: %d \n",Snack1.snackType,Snack1.cost,Snack1.quantity);
 	printf("2) %s \t\t cost: $%.2f \t quantity: %d \n",Snack2.snackType,Snack2.cost,Snack2.quantity);
 	
 	printf("What snack would you like to buy? [0,1,2] ");
 	
-	int snackOption;
+	int snackOption;				/* reading user input for snack options*/
 	scanf("%d",&snackOption);
 	printf("\n");
 	
-	if(snackOption == 0){
+	if(snackOption == 0){						/* organizing input for each snack option*/
 		if(Snack0.cost > userMoney){
 			printf("You can't afford it!\n");
 		}

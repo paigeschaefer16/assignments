@@ -1,3 +1,10 @@
+/*
+ * Author: Paige Schaefer 
+ * Purpose: Play rock, paper scisscors with AI 
+ * Language:  C
+ * Created: January 2022
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -6,24 +13,25 @@
 void game(int rounds){
     int AIScore = 0;
     int playerScore = 0;
-    for(int i = 0; i < rounds; i++){
+    for(int i = 0; i < rounds; i++){                /* iterate for each round */
     
         printf("Which do you choose? rock, paper, or scissors? ");
-        char input[50];
+        char input[50];                                 /* user input */
         scanf("%s",input);
         printf("\n");
 
-        int inputSum = 0;
+        int inputSum = 0;                               /* recongnize bad input*/
         for (int j = 0; input[j] != '\0'; j++){
             inputSum += input[j];
         }
 
-        int randomNum;
+        int randomNum;                                  /* random number generator*/
         srand(time(0));
         randomNum = (rand() % (3-0+1))+0;
  
-        int gamePlay; 
-        while(randomNum < 4){
+        int gamePlay;       
+
+        while(randomNum < 4){                               /* edit generator*/
             if(randomNum == 0 || randomNum == 2 || randomNum == 3){
                 break;
             }
@@ -33,7 +41,7 @@ void game(int rounds){
             }
         }
 
-        if(randomNum == 0){
+        if(randomNum == 0){                             /* AI input*/
             char AI[50] = "rock";
             printf("AI chose %s\n", AI);
             gamePlay = strcmp(AI,input);
@@ -49,8 +57,8 @@ void game(int rounds){
             gamePlay = strcmp(AI,input);
         }
       
-        if(inputSum == 431 || inputSum == 536 || inputSum == 889){
-           if(gamePlay == -1 || gamePlay == 3 || gamePlay == -2){
+        if(inputSum == 431 || inputSum == 536 || inputSum == 889){      /* regonize bad input*/
+           if(gamePlay == -1 || gamePlay == 3 || gamePlay == -2){       /* determine score of round */
                 AIScore = AIScore + 1;
             }
             else if(gamePlay == -3 || gamePlay == 2 || gamePlay == 1){
@@ -64,7 +72,7 @@ void game(int rounds){
         
         printf("AI Score: %d , Player Score: %d\n",AIScore, playerScore);
     }
-    if(AIScore > playerScore){
+    if(AIScore > playerScore){                                  /* overall score*/
         printf("AI wins!\n");
     }
     else if(AIScore < playerScore){
