@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <string.h>
 
-struct Snacks{				/* struct to create Snack Bar*/
+struct Snacks{				
 	char snackType[50];
 	float cost;
 	int quantity; 
@@ -18,30 +18,34 @@ int main() {
 	printf("Welcome to Steven Struct's Snack Bar.\n"); 
 	printf("How much money do you have? ");
 	
-	float userMoney;						/* reading user Money */
+	float userMoney;						
 	scanf("%f",&userMoney);
 	printf("\n");
 	
-	struct Snacks Snack0;					/* creating structs*/
-	struct Snacks Snack1;
-	struct Snacks Snack2;
+	struct Snacks snackArray[3];
+	//struct Snacks Snack0;					
+	//struct Snacks Snack1;
+	//struct Snacks Snack2;
 
-	strcpy(Snack0.snackType, "Coco Puffs");
-	Snack0.cost = 1.50;
-	Snack0.quantity = 4;
+	strcpy(snackArray[0].snackType, "Coco Puffs");
+	snackArray[0].cost = 1.50;
+	snackArray[0].quantity = 4;
 
-	strcpy(Snack1.snackType, "Manchego cheese");
-        Snack1.cost = 15.50;
-        Snack1.quantity = 6;
+	strcpy(snackArray[1].snackType, "Manchego cheese");
+    snackArray[1].cost = 15.50;
+    snackArray[1].quantity = 6;
 
-	strcpy(Snack2.snackType, "Magic beans");
-        Snack2.cost = 0.50;
-        Snack2.quantity = 0;
+	strcpy(snackArray[2].snackType, "Magic beans");
+    snackArray[2].cost = 0.50;
+    snackArray[2].quantity = 0;
 
 	/* printing structs*/
-	printf("0) %s \t\t cost: $%.2f \t quantity: %d \n",Snack0.snackType,Snack0.cost,Snack0.quantity);
-	printf("1) %s \t cost: $%.2f \t quantity: %d \n",Snack1.snackType,Snack1.cost,Snack1.quantity);
-	printf("2) %s \t\t cost: $%.2f \t quantity: %d \n",Snack2.snackType,Snack2.cost,Snack2.quantity);
+	printf("0) %s \t\t cost: $%.2f \t quantity: %d \n",
+				snackArray[0].snackType,snackArray[0].cost,snackArray[0].quantity);
+	printf("1) %s \t cost: $%.2f \t quantity: %d \n",
+				snackArray[1].snackType,snackArray[1].cost,snackArray[1].quantity);
+	printf("2) %s \t\t cost: $%.2f \t quantity: %d \n",
+				 snackArray[2].snackType, snackArray[2].cost, snackArray[2].quantity);
 	
 	printf("What snack would you like to buy? [0,1,2] ");
 	
@@ -50,44 +54,44 @@ int main() {
 	printf("\n");
 	
 	if(snackOption == 0){						/* organizing input for each snack option*/
-		if(Snack0.cost > userMoney){
+		if( snackArray[0].cost > userMoney){
 			printf("You can't afford it!\n");
 		}
-		else if(Snack0.quantity == 0){
-			printf("Sorry, we are out of %s\n",Snack0.snackType);
+		else if( snackArray[0].quantity == 0){
+			printf("Sorry, we are out of %s\n", snackArray[0].snackType);
 		}
 		else{
-			printf("You bought %s\n",Snack0.snackType);
-			userMoney = userMoney - Snack0.cost;
+			printf("You bought %s\n", snackArray[0].snackType);
+			userMoney = userMoney -  snackArray[0].cost;
 			printf("You have $%0.2f left\n",userMoney);
 		}
 	}
 	
-	 if(snackOption == 1){
-		if(Snack1.cost > userMoney){
-                        printf("You can't afford it!\n");
-                }
-                else if(Snack1.quantity == 0){
-                        printf("Sorry, we are out of %s\n",Snack1.snackType);
-                }
-                else{
-                        printf("You bought %s\n",Snack1.snackType);
-                        userMoney = userMoney - Snack1.cost;
-                        printf("You have $%0.2f left\n",userMoney);
-                }
+	if(snackOption == 1){
+		if(snackArray[1].cost > userMoney){
+            printf("You can't afford it!\n");
         }
-	 if(snackOption == 2){
-		if(Snack2.cost > userMoney){
-                        printf("You can't afford it!\n");
-                }
-                else if(Snack2.quantity == 0){
-                        printf("Sorry, we are out of %s\n",Snack2.snackType);
-                }
-                else{
-                        printf("You bought %s\n",Snack2.snackType);
-                        userMoney = userMoney - Snack2.cost;
-                        printf("You have $%0.2f left\n",userMoney);
-                }
+        else if(snackArray[1].quantity == 0){
+            printf("Sorry, we are out of %s\n",snackArray[1].snackType);
         }
+        else{
+            printf("You bought %s\n",snackArray[1].snackType);
+                userMoney = userMoney - snackArray[1].cost;
+                printf("You have $%0.2f left\n",userMoney);
+            }
+    }
+	if(snackOption == 2){
+		if(snackArray[2].cost > userMoney){
+            printf("You can't afford it!\n");
+        }
+        else if(snackArray[2].quantity == 0){
+            printf("Sorry, we are out of %s\n",snackArray[2].snackType);
+        }
+        else{
+            printf("You bought %s\n",snackArray[2].snackType);
+            userMoney = userMoney - snackArray[2].cost;
+        	printf("You have $%0.2f left\n",userMoney);
+        }
+    }
 	return 0;
 }
