@@ -23,9 +23,7 @@ int main() {
 	printf("\n");
 	
 	struct Snacks snackArray[3];
-	//struct Snacks Snack0;					
-	//struct Snacks Snack1;
-	//struct Snacks Snack2;
+
 
 	strcpy(snackArray[0].snackType, "Coco Puffs");
 	snackArray[0].cost = 1.50;
@@ -39,7 +37,7 @@ int main() {
     snackArray[2].cost = 0.50;
     snackArray[2].quantity = 0;
 
-	/* printing structs*/
+
 	printf("0) %s \t\t cost: $%.2f \t quantity: %d \n",
 				snackArray[0].snackType,snackArray[0].cost,snackArray[0].quantity);
 	printf("1) %s \t cost: $%.2f \t quantity: %d \n",
@@ -49,11 +47,11 @@ int main() {
 	
 	printf("What snack would you like to buy? [0,1,2] ");
 	
-	int snackOption;				/* reading user input for snack options*/
+	int snackOption;				
 	scanf("%d",&snackOption);
 	printf("\n");
 	
-	if(snackOption == 0){						/* organizing input for each snack option*/
+	if(snackOption == 0){						
 		if( snackArray[0].cost > userMoney){
 			printf("You can't afford it!\n");
 		}
