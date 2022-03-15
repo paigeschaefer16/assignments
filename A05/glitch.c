@@ -21,7 +21,6 @@ int main(int argc, char** argv) {
   char result[100];
 
   strcpy(result,outputFile);
-
   for(int i = 0; i < strlen(outputFile) + 7;i++){
     if(result[i] == '.'){
       result[i] = '-';
@@ -35,9 +34,12 @@ int main(int argc, char** argv) {
       result[i+8] = 'p';
       result[i+9] = 'p';
       result[i+10] = 'm';
+      result[i+11] = '\0';
       break;
     } 
   }
+
+  
   printf("Writing file %s\n",result);
   write_ppm(result,pixelArray,width,height);
   
