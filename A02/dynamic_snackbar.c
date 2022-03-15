@@ -13,7 +13,7 @@ int main() {
   printf("Enter a number of snacks: ");
   scanf("%d", &numSnacks);
 
-  struct snack snackArray[numSnacks];
+  struct snack *snackArray = malloc(sizeof *snackArray * numSnacks);
   
   for(int i = 0; i < numSnacks; i++){
     printf("Enter a name: ");
@@ -27,9 +27,13 @@ int main() {
   }
 
   for(int i = 0; i < numSnacks; i++){
-    printf("%d) %s \t\t cost: $%.2f \t quantity: %d \n",i,snackArray[i].name,snackArray[i].cost,snackArray[i].quantity);
+    printf("%d) %s \t\t cost: $%.2f \t quantity: %d \n",i,snackArray[i].name,
+      snackArray[i].cost,snackArray[i].quantity);
 
   }
 
+  free(snackArray);
+
   return 0;
 }
+
