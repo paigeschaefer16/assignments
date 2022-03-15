@@ -6,8 +6,8 @@ int main() {
   int width = 0;
   int height = 0; 
 
-  const char* fileName = malloc(100);
-  fileName = "feep-ascii.ppm";
+  const char* fileName = "feep-ascii.ppm";
+  
   
 
   struct ppm_pixel* pixelArray = read_ppm(fileName, &width,&height);
@@ -24,6 +24,7 @@ int main() {
     count = count + 1;
     
 	}
+
   free(pixelArray);
   return 0;
 }

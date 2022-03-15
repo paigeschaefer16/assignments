@@ -14,8 +14,8 @@ int main(int argc, char** argv) {
 
   
   int pixelSize = width * height;
-  unsigned char *intensity = malloc(sizeof(pixelSize));
-  char *symbols = malloc(sizeof(pixelSize));
+  unsigned char *intensity = malloc(sizeof((unsigned char)* &pixelSize));
+  char *symbols = malloc(sizeof((char) * &pixelSize));
 
   int count = 1;
   
@@ -67,7 +67,8 @@ int main(int argc, char** argv) {
     }
     count++;
 	}
- 
+  
+  free(symbols);
   free(intensity);
   free(pixelArray);
   return 0;
