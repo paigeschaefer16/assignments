@@ -8,7 +8,7 @@
 int main(int argc, char* argv[]) {
   srand(time(0));
 
-  int size = 480;
+  int size = 2000;
   float xmin = -2.0;
   float xmax = 0.47;
   float ymin = -1.12;
