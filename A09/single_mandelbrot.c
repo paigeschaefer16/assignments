@@ -40,6 +40,7 @@ int main(int argc, char* argv[]) {
   struct ppm_pixel *palette = malloc(sizeof(struct ppm_pixel) *maxIterations);
   struct ppm_pixel *mandelbrot = malloc(sizeof(struct ppm_pixel) *size*size);
 
+
   for(int i = 0; i < maxIterations; i++){
     palette[i].red = rand() % 255;
     palette[i].green = rand() % 255;
