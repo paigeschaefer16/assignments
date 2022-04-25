@@ -15,8 +15,7 @@ processors, size of RAM? (use `lscpu` and `free -m`)
 
 In `simple.c`, where does the increase in 1040 bytes come from?
 Why is the value 1040 bytes? 
-The increase in 1040 bytes comes from the print statements. The value is 1040 because of 
-what the print statement is printing. 
+1024 for print + 16 chunks for header = 1040 
 
 
 How many bytes does `mylloc_list.c` allocate when the program ends? Explain why
@@ -37,52 +36,64 @@ External fragmentation occurs when memory is divided into variable size partitio
 based on the size of the processes. 
 
 Program Output 
-The initial top of the heap is 0x7f7afad7c000.
-Total blocks: 235 Free: 11 Used: 224
-Internal used: total: average: smallest:  largest: 
-Extrnal used: total: average: smallest:  largest:  
+The initial top of the heap is 0x7fe08e6fd000.
+Total Blocks: 161 Free: 103 Used: 58
+Internal unused: total: 178682 average: 3080.0 smallest: 511 largest: 3979
+External unused: total: 144345 average: 1401.0 smallest: 10 largest: 3984
 0
-The current top of the heap is 0x7f7afcce65e5.
-Increased by 32169 (0x7da9) Kbyte
-Total blocks: 933 Free: 865 Used: 68
-Internal used: total: average: smallest:  largest: 
-Extrnal used: total: average: smallest:  largest:  
+The current top of the heap is 0x7fe08e753527.
+Increased by 345 (0x159) Kbyte
+Total Blocks: 167 Free: 113 Used: 54
+Internal unused: total: 159454 average: 2952.0 smallest: 107 largest: 3991
+External unused: total: 177549 average: 1571.0 smallest: 10 largest: 3984
 1
-The current top of the heap is 0x7f7afec77f99.
-Increased by 64495 (0xfbef) Kbyte
-Total blocks: 1262 Free: 95 Used: 1167
-Internal used: total: average: smallest:  largest: 
-Extrnal used: total: average: smallest:  largest:  
+The current top of the heap is 0x7fe08e759327.
+Increased by 368 (0x170) Kbyte
+Total Blocks: 169 Free: 117 Used: 52
+Internal unused: total: 157088 average: 3020.0 smallest: 129 largest: 3977
+External unused: total: 189341 average: 1618.0 smallest: 10 largest: 3997
 2
-The current top of the heap is 0x7f7b00baf03b.
-Increased by 96460 (0x178cc) Kbyte
-Total blocks: 3452 Free: 232 Used: 3220
-Internal used: total: average: smallest:  largest: 
-Extrnal used: total: average: smallest:  largest:  
+The current top of the heap is 0x7fe08e75b282.
+Increased by 376 (0x178) Kbyte
+Total Blocks: 172 Free: 120 Used: 52
+Internal unused: total: 160672 average: 3089.0 smallest: 146 largest: 3989
+External unused: total: 201235 average: 1676.0 smallest: 10 largest: 3998
 3
-The current top of the heap is 0x7f7b02b2a238.
-Increased by 128696 (0x1f6b8) Kbyte
-Total blocks: 613 Free: 24 Used: 589
-Internal used: total: average: smallest:  largest: 
-Extrnal used: total: average: smallest:  largest:  
+The current top of the heap is 0x7fe08e75e188.
+Increased by 388 (0x184) Kbyte
+Total Blocks: 175 Free: 125 Used: 50
+Internal unused: total: 145974 average: 2919.0 smallest: 6 largest: 3984
+External unused: total: 222205 average: 1777.0 smallest: 10 largest: 3999
 4
-The current top of the heap is 0x7f7b04a88345.
-Increased by 160816 (0x27430) Kbyte
-Total blocks: 2931 Free: 55 Used: 2876
-Internal used: total: average: smallest:  largest: 
-Extrnal used: total: average: smallest:  largest:  
+The current top of the heap is 0x7fe08e761095.
+Increased by 400 (0x190) Kbyte
+Total Blocks: 176 Free: 116 Used: 60
+Internal unused: total: 191611 average: 3193.0 smallest: 984 largest: 3986
+External unused: total: 189140 average: 1630.0 smallest: 10 largest: 3999
 5
-The current top of the heap is 0x7f7b069dd294.
-Increased by 192900 (0x2f184) Kbyte
-Total blocks: 3639 Free: 3610 Used: 29
-Internal used: total: average: smallest:  largest: 
-Extrnal used: total: average: smallest:  largest:  
+The current top of the heap is 0x7fe08e762045.
+Increased by 404 (0x194) Kbyte
+Total Blocks: 176 Free: 128 Used: 48
+Internal unused: total: 153391 average: 3195.0 smallest: 381 largest: 3991
+External unused: total: 227231 average: 1775.0 smallest: 10 largest: 4000
 6
-The current top of the heap is 0x7f7b0897fede.
-Increased by 225295 (0x3700f) Kbyte
-Total blocks: 1299 Free: 9 Used: 1290
-Internal used: total: average: smallest:  largest: 
-Extrnal used: total: average: smallest:  largest:  
+The current top of the heap is 0x7fe08e762045.
+Increased by 404 (0x194) Kbyte
+Total Blocks: 177 Free: 125 Used: 52
+Internal unused: total: 154837 average: 2977.0 smallest: 138 largest: 3989
+External unused: total: 219943 average: 1759.0 smallest: 10 largest: 3999
 7
-The current top of the heap is 0x7f7b0a8d0c57.
-Increased by 257363 (0x3ed53) Kbyte
+The current top of the heap is 0x7fe08e762ff5.
+Increased by 407 (0x197) Kbyte
+Total Blocks: 178 Free: 118 Used: 60
+Internal unused: total: 193404 average: 3223.0 smallest: 401 largest: 3990
+External unused: total: 193697 average: 1641.0 smallest: 10 largest: 4000
+8
+The current top of the heap is 0x7fe08e763fa5.
+Increased by 411 (0x19b) Kbyte
+Total Blocks: 178 Free: 130 Used: 48
+Internal unused: total: 150237 average: 3129.0 smallest: 636 largest: 3987
+External unused: total: 237661 average: 1828.0 smallest: 10 largest: 4000
+9
+The current top of the heap is 0x7fe08e763fa5.
+Increased by 411 (0x19b) Kbyte
