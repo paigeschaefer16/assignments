@@ -33,9 +33,9 @@ the amount of time it takes to compute each image.
 [cols="1,1"]
 !===
 | Size | Time (s) 
-| 100 | 0.026641 seconds
-| 400 | 0.285994 seconds
-| 800 | 1.070917 seconds
-| 1000 | 1.688859 seconds
-| 2000 | 6.531315 seconds
+| 100 | 0.018346 seconds
+| 400 | 0.141221 seconds
+| 800 | 0.502570 seconds
+| 1000 | 0.735239 seconds 
+| 2000 | 2.756835 seconds
 !===

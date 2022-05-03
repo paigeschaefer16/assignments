@@ -12,46 +12,41 @@
 void mandelbrotFunction(struct ppm_pixel* palette,struct ppm_pixel* mandelbrot,int size,float xmin,
                                         float xmax,float ymin, float ymax,int maxIterations,
                                         int colStart,int colEnd,int rowStart,int rowEnd){
-  int col = colStart;
-  int row = rowStart;
+  
 
-  for(int i = 0; i < size * size;i++){
-    float xfrac = ((float)col)/size;
-    float yfrac = ((float)row)/size;
-    float x0 = xmin + xfrac * (xmax - xmin);
-    float y0 = ymin + yfrac * (ymax - ymin);
+  for(int r = rowStart; r < rowEnd;r++){
+    for(int c = colStart; c < colEnd;c++){
+      int i = size * r + c;
+      float xfrac = ((float)c)/size;
+      float yfrac = ((float)r)/size;
+      float x0 = xmin + xfrac * (xmax - xmin);
+      float y0 = ymin + yfrac * (ymax - ymin);
 
-    float x = 0; 
-    float y = 0;
-    int iter = 0;
-    while(iter < maxIterations && (x*x + y*y) < 2*2){
-      float xtmp = x*x - y*y + x0;
-      y = 2*x*y + y0;
-      x = xtmp; 
-      iter = iter + 1;
-    }
-    if(iter < maxIterations){
-      mandelbrot[i].red = palette[iter].red + rand() % 100 - 50;
-      mandelbrot[i].green = palette[iter].green + rand() % 100 - 50;
-      mandelbrot[i].blue = palette[iter].blue + rand() % 100 - 50;
-    }
-    else{
-      mandelbrot[i].red = 0;
-      mandelbrot[i].green = 0;
-      mandelbrot[i].blue = 0;
-    }
-
-    col++;
-
-    if(col == colEnd){
-      row++;
-      col = 0;
+      float x = 0; 
+      float y = 0;
+      int iter = 0;
+      while(iter < maxIterations && (x*x + y*y) < 2*2){
+        float xtmp = x*x - y*y + x0;
+        y = 2*x*y + y0;
+        x = xtmp; 
+        iter = iter + 1;
+      }
+      if(iter < maxIterations){
+        mandelbrot[i].red = palette[iter].red + rand() % 100 - 50;
+        mandelbrot[i].green = palette[iter].green + rand() % 100 - 50;
+        mandelbrot[i].blue = palette[iter].blue + rand() % 100 - 50;
+      }
+      else{
+        mandelbrot[i].red = 0;
+        mandelbrot[i].green = 0;
+        mandelbrot[i].blue = 0;
+      }
     }
   }
 }
 int main(int argc, char* argv[]) {
   srand(time(0));
-  int size = 2000;
+  int size = 480;
   float xmin = -2.0;
   float xmax = 0.47;
   float ymin = -1.12;
@@ -182,12 +177,6 @@ int main(int argc, char* argv[]) {
     printf("Child process complete\n");
     fflush(stdout);
   } 
-  /**for(int i = 1; i <=4;i++){
-    int status; 
-    int pid = wait(&status);
-    fflush(stdout);
-  }**/
-
 
   gettimeofday(&tend, NULL);
   timer = tend.tv_sec - tstart.tv_sec + (tend.tv_usec - tstart.tv_usec)/1.e6;
