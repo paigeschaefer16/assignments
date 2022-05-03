@@ -31,13 +31,37 @@ struct snack* insert_sorted(struct snack* snacks,
 
   if(new_snack == NULL){
     printf("Failed to insert element. Out of memory");
+    exit(1);
   }
   
   strcpy(new_snack -> name,name);
   new_snack -> cost = cost; 
   new_snack -> quantity = quantity; 
 
-  new_snack -> next = snacks;
+  new_snack -> next = NULL;
+  if(snacks == NULL){
+    snacks = new_snack;
+  }
+  else if(strcmp(new_snack->name,snacks->name) < 0){
+    new_snack->next = snacks;
+    snacks = new_snack;
+  }
+  else{
+    struct snack * current = snacks;
+    while(current->next != NULL){
+      if(strcmp(current->next->name,new_snack->name)> 0){
+        new_snack->next = current->next;
+        current->next = new_snack;
+        break;
+      }  
+      current = current->next;
+    }
+    if(strcmp(current->name,new_snack->name)< 0){
+      current->next = new_snack;
+    }
+    
+  }
+
   
   return snacks;
 }
@@ -55,8 +79,9 @@ void clear(struct snack* snacks) {
 }
 
 void print(struct snack* snacks){
-  for(struct snack * new_snack = snacks; new_snack != NULL; new_snack->next){
-      printf("%s cost: %0.2f quantity: %d \n",snacks->name,snacks->cost,snacks->quantity);
+  printf("\n");
+  for(struct snack * new_snack = snacks; new_snack != NULL; new_snack = new_snack->next){
+      printf("%s\t cost: $%0.2f \t quantity: %d \n",new_snack->name,new_snack->cost,new_snack->quantity);
   }
 }
 
@@ -65,41 +90,29 @@ int main() {
   printf("Enter a number of snacks: ");
   scanf(" %d",&numSnacks);
 
-  struct snack snackArray[numSnacks];
+  struct snack *snackPointer = NULL;
+
+  char tempName[32];
+  int tempQuantity;
+  float tempCost;
 
   for(int i = 0; i < numSnacks; i++){
     printf("Enter a name: ");
-    scanf("%s",snackArray[i].name);
+    scanf("%s",tempName);
 
     printf("Enter a cost: ");
-    scanf("%f",&snackArray[i].cost);
+    scanf("%f",&tempCost);
 
     printf("Enter a quantity: ");
-    scanf("%d", &snackArray[i].quantity);
+    scanf("%d",&tempQuantity);
+    snackPointer = insert_sorted(snackPointer,tempName,tempQuantity,tempCost);
   }
-  char *sortedName[numSnacks * 3]; 
-  for(int i = 0; i < numSnacks;i++){
-    sortedName[i] = snackArray[i].name;
-  }
-  char temp[numSnacks * 3];
+  printf("\n");
+  printf("Welcome to Sorted Sally's Snack Bar.\n");
+  print(snackPointer);
+  
 
-  for(int i=0; i<numSnacks; i++){
-    for(int j=0; j<numSnacks-1-i; j++){
-      if(strcmp(snackArray[j].name, snackArray[j+1].name) > 0){
-        strcpy(temp, snackArray[j].name);
-        strcpy(snackArray[j].name, snackArray[j+1].name);
-        strcpy(snackArray[j+1].name, temp);
-      }
-    }
-  }
-  struct snack* snack[numSnacks];
-  for(int i = 0; i < numSnacks;i++){
-    snack[i] = insert_sorted(snack[i],snackArray[i].name
-                              ,snackArray[i].cost,snackArray[i].quantity);
-    print(snack[i]);
-    clear(snack[i]);
-    
-  }
+  
   return 0;
 }
 

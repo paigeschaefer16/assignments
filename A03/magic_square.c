@@ -10,7 +10,9 @@
 
 int main(int argc, char **argv) {
     FILE *infile =  NULL;
+
     infile = fopen(argv[1], "r");
+
 
     int height;
     int width; 
