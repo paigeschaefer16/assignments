@@ -8,7 +8,9 @@
 #include <sys/time.h>
 #include "read_ppm.h"
 
+int maxCount = 0; 
 pthread_mutex_t mutex;
+pthread_barrier_t barrier;
 
 struct thread_data {
   struct ppm_pixel* mandelbrot;
@@ -22,115 +24,93 @@ struct thread_data {
   int colEnd;
   int rowStart;
   int rowEnd;
+  int **setMembership;
+  int **counts;
+  int id; 
 };
 void *mandelbrotFunction(void *inputData){
   struct thread_data *data = (struct thread_data *) inputData;
-  int col = data->colStart;
-  int row = data->rowStart;
-
-
-  char *setMembership[480][480];
-  int counts[480][480];
-  
-  for(int i = 0; i < data->size; i++){
-    for(int j = 0; j < data->size; j++){
-      setMembership[i][j] = " ";
-      counts[i][j] = 0;
-    }
-  }
   
 
-  for(int i = 0; i < data->size * data->size;i++){
-    float xfrac = ((float)col)/data->size;
-    float yfrac = ((float)row)/data->size;
-    float x0 = data->xmin + xfrac * (data->xmax - data->xmin);
-    float y0 = data->ymin + yfrac * (data->ymax - data->ymin);
-
-    float x = 0; 
-    float y = 0;
-    int iter = 0;
-    while(iter < data->maxIterations && (x*x + y*y) < 2*2){
-      float xtmp = x*x - y*y + x0;
-      y = 2*x*y + y0;
-      x = xtmp; 
-      iter = iter + 1;
-    }
-    if(iter < data->maxIterations){
-      setMembership[row][col] = "false";
-      
-    }
-    else{
-      setMembership[row][col] = "true";
-    }
-
-    col++;
-
-    if(col == data->colEnd){
-      row++;
-      col = 0;
-    }
-  }
-
-  col = data->colStart;
-  row = data->rowStart;
-  int maxCount = 0;
-
-  for(int i = 0; i < data->size * data->size;i++){
-    if((setMembership[row][col] = "true")){
-      float xfrac = ((float)col)/data->size;
-      float yfrac = ((float)row)/data->size;
-
+  for(int r = data->rowStart; r < data->rowEnd;r++){
+    for(int c = data->colStart; c < data->colEnd;c++){
+      int i = data -> size * r + c;
+      float xfrac = ((float)c)/data->size;
+      float yfrac = ((float)r)/data->size;
       float x0 = data->xmin + xfrac * (data->xmax - data->xmin);
       float y0 = data->ymin + yfrac * (data->ymax - data->ymin);
 
       float x = 0; 
       float y = 0;
-      
-      while(x*x + y*y < 2*2){
+      int iter = 0;
+      while(iter < data->maxIterations && (x*x + y*y) < 2*2){
         float xtmp = x*x - y*y + x0;
         y = 2*x*y + y0;
         x = xtmp; 
-
-        int yrow = round(data->size * (y - data->ymin)/(data->ymax - data->ymax));
-        int xcol = round(data->size * (x - data->xmin)/(data->xmax - data->xmax));
-        
-        if(yrow < 0 || yrow >= data->size){
-          if(xcol < 0 || xcol >= data->size){
-            counts[yrow][xcol] = counts[yrow][xcol] + 1;
-            maxCount = maxCount + 1;
-          }
-        }
-        
+        iter = iter + 1;
       }
-      col++;
-
-      if(col == data->colEnd){
-        row++;
-        col = 0;
+      
+      if(iter < data->maxIterations){
+        data->setMembership[r][c] = 0;
+      }
+      else{
+        data->setMembership[r][c] = 1;
       }
     }
   }
 
-  col = data->colStart;
-  row = data->rowStart;
+  for(int r = data->rowStart; r < data->rowEnd;r++){
+    for(int c = data->colStart; c < data->colEnd;c++){
+      int i = data->size * r + c;
+      if((data->setMembership[r][c] == 0)){
+        float xfrac = ((float)c)/data->size;
+        float yfrac = ((float)r)/data->size;
+
+        float x0 = data->xmin + xfrac * (data->xmax - data->xmin);
+        float y0 = data->ymin + yfrac * (data->ymax - data->ymin);
+
+        float x = 0; 
+        float y = 0;
+      
+        while(x*x + y*y < 2*2){
+          float xtmp = x*x - y*y + x0;
+          y = 2*x*y + y0;
+          x = xtmp; 
+
+          int yrow = round(data->size * (y - data->ymin)/(data->ymax - data->ymin));
+          int xcol = round(data->size * (x - data->xmin)/(data->xmax - data->xmin));
+        
+          if(yrow > 0 && yrow < data->size){
+            if(xcol > 0 && xcol < data->size){
+              pthread_mutex_lock(&mutex);
+              data->counts[yrow][xcol] = data->counts[yrow][xcol] + 1;
+              if(data->counts[yrow][xcol] > maxCount){
+                maxCount = data->counts[yrow][xcol];
+              }
+              pthread_mutex_unlock(&mutex);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  //pthread_barrier_wait(&barrier);
 
   float gamma = 0.681;
   float factor = 1.0/gamma; 
-  for(int i = 0; i < data->size * data->size;i++){
-    int value = 0; 
-    if(counts[row][col] > 0){
-      value = log(counts[row][col])/log(maxCount);
-      value = pow(value,factor);
-    }
-    data->mandelbrot[i].red = value * 255;
-    data->mandelbrot[i].green = value * 255;
-    data->mandelbrot[i].blue = value * 255;
 
-    col++;
-
-    if(col == data->colEnd){
-      row++;
-      col = 0;
+  for(int r = data->rowStart; r < data->rowEnd;r++){
+    for(int c = data->colStart; c < data->colEnd;c++){
+      int i = data->size * r + c;
+      int value = data->setMembership[r][c]; 
+      if(data->counts[r][c] > 0){
+        value = log(data->counts[r][c])/log(maxCount);
+        value = pow(value,factor);
+      }
+      data->mandelbrot[i].red = value * 255;
+      data->mandelbrot[i].green = value * 255;
+      data->mandelbrot[i].blue = value * 255;
     }
   }
   return (void*) NULL;
@@ -173,6 +153,27 @@ int main(int argc, char* argv[]) {
   pthread_t threads[4];
   struct thread_data data[4];
 
+  int** setMembership = malloc(sizeof(int*) * size);
+  for (int i = 0; i < size; i++) {
+    setMembership[i] = malloc(sizeof(int) * size);
+  }
+
+  int** counts = malloc(sizeof(int*) * size);
+  for (int i = 0; i < size; i++) {
+    counts[i] = malloc(sizeof(int) * size);
+  }
+
+  for(int i = 0; i < size; i++){
+    for(int j = 0; j < size;j++){
+      counts[i][j] = 0;
+    }
+  }
+  
+  
+  pthread_mutex_init(&mutex,NULL);
+ 
+  //pthread_barrier_init(&barrier,NULL,maxCount);
+
   for(int i = 0; i < 4;i++){
     if(i == 0){
       data[i].colStart = 0; 
@@ -190,7 +191,7 @@ int main(int argc, char* argv[]) {
       data[i].colStart = 0; 
       data[i].colEnd = size/2; 
       data[i].rowStart = size/2;
-      data[i].rowEnd = size/2; 
+      data[i].rowEnd = size; 
     }
     if(i == 3){
       data[i].colStart = size/2; 
@@ -205,12 +206,21 @@ int main(int argc, char* argv[]) {
     data[i].ymax = ymax;
     data[i].maxIterations = maxIterations;
     data[i].mandelbrot = mandelbrot;
+    data[i].setMembership = setMembership; 
+    data[i].counts = counts; 
     pthread_create(&threads[i],NULL,mandelbrotFunction,(void *) &data[i]);
+    printf("Thread %d) sub-image block: cols (%d, %d) to rows (%d,%d)\n",i,data[i].colStart,
+                                                          data[i].colEnd,data[i].rowStart,data[i].rowEnd);
   }
 
   for(int i = 0; i < 4;i++){
     pthread_join(threads[i],NULL);
+    printf("Thread %d) finished\n",i);
   }
+
+  pthread_mutex_destroy(&mutex);
+  //pthread_barrier_destroy(&barrier);
+
   
   gettimeofday(&tend, NULL);
   timer = tend.tv_sec - tstart.tv_sec + (tend.tv_usec - tstart.tv_usec)/1.e6;
@@ -222,4 +232,12 @@ int main(int argc, char* argv[]) {
 
   write_ppm(buffer,data->mandelbrot,size,size);
   printf("Writing file: %s\n",buffer);
+
+  for (int i = 0; i < size; i++) {
+    free(setMembership[i]);
+    free(counts[i]);
+  }
+  free(setMembership);
+  free(counts);
+  
 }

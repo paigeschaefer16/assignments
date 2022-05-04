@@ -24,41 +24,34 @@ struct thread_data {
 
 void *mandelbrotFunction(void *inputData){
   struct thread_data *data = (struct thread_data *) inputData;
-  int col = data->colStart;
-  int row = data->rowStart;
+ 
+  for(int r = data->rowStart; r < data->rowEnd;r++){
+    for(int c = data->colStart; c < data->colEnd;c++){
+      int i = data->size * r + c;
+      float xfrac = ((float)c)/data->size;
+      float yfrac = ((float)r)/data->size;
+      float x0 = data->xmin + xfrac * (data->xmax - data->xmin);
+      float y0 = data->ymin + yfrac * (data->ymax - data->ymin);
 
-  for(int i = 0; i < data->size * data->size;i++){
-    float xfrac = ((float)col)/data->size;
-    float yfrac = ((float)row)/data->size;
-    float x0 = data->xmin + xfrac * (data->xmax - data->xmin);
-    float y0 = data->ymin + yfrac * (data->ymax - data->ymin);
-
-    float x = 0; 
-    float y = 0;
-    int iter = 0;
-    while(iter < data->maxIterations && (x*x + y*y) < 2*2){
-      float xtmp = x*x - y*y + x0;
-      y = 2*x*y + y0;
-      x = xtmp; 
-      iter = iter + 1;
-    }
-    if(iter < data->maxIterations){
-      data->mandelbrot[i].red = data->palette[iter].red + rand() % 100 - 50;
-      data->mandelbrot[i].green = data->palette[iter].green + rand() % 100 - 50;
-      data->mandelbrot[i].blue = data->palette[iter].blue + rand() % 100 - 50;
-      
-    }
-    else{
-      data->mandelbrot[i].red = 0;
-      data->mandelbrot[i].green = 0;
-      data->mandelbrot[i].blue = 0;
-    }
-
-    col++;
-
-    if(col == data->colEnd){
-      row++;
-      col = 0;
+      float x = 0; 
+      float y = 0;
+      int iter = 0;
+      while(iter < data->maxIterations && (x*x + y*y) < 2*2){
+        float xtmp = x*x - y*y + x0;
+        y = 2*x*y + y0;
+        x = xtmp; 
+        iter = iter + 1;
+      }
+      if(iter < data->maxIterations){
+        data->mandelbrot[i].red = data->palette[iter].red + rand() % 100 - 50;
+        data->mandelbrot[i].green = data->palette[iter].green + rand() % 100 - 50;
+        data->mandelbrot[i].blue = data->palette[iter].blue + rand() % 100 - 50;
+      }
+      else{
+        data->mandelbrot[i].red = 0;
+        data->mandelbrot[i].green = 0;
+        data->mandelbrot[i].blue = 0;
+      }
     }
   }
   return (void*) NULL;
